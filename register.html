@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Create account · StreamHub{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <h1>Create your account</h1>
+  <p class="muted">Your dashboard is private to your account.</p>
+  <form method="post">
+    <label>Username<input name="username" required minlength="3" autocomplete="username"></label>
+    <label>Password<input type="password" name="password" required minlength="8" autocomplete="new-password"></label>
+    <button class="button" type="submit">Create account</button>
+  </form>
+  <p class="muted small">Already registered? <a href="{{ url_for('login') }}">Log in</a>.</p>
+</section>
+{% endblock %}

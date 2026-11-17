@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · StreamHub{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><p class="eyebrow">YOUR LIBRARY</p><h1>Video dashboard</h1><p class="muted">Upload new content and manage your streams.</p></div>
+</div>
+<section class="panel upload-panel">
+  <h2>Upload a video</h2>
+  <form class="upload-form" method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+    <label>Video title <input name="title" placeholder="e.g. Product demo"></label>
+    <label>Choose video <input type="file" name="video" accept="video/mp4,video/quicktime,video/x-matroska,video/webm" required></label>
+    <button class="button" type="submit">Upload and process</button>
+  </form>
+  <p class="hint">FFmpeg will convert the upload to HLS for browser streaming. Maximum size: {{ config.MAX_CONTENT_LENGTH // (1024*1024) }} MB.</p>
+</section>
+
+<div class="section-heading"><h2>Your videos</h2><span class="muted">{{ videos|length }} total</span></div>
+{% if videos %}
+  <div class="video-grid">
+    {% for video in videos %}
+      <article class="video-card">
+        <div class="video-placeholder">▶</div>
+        <div class="video-info">
+          <h3>{{ video.title }}</h3>
+          <p class="muted small">{{ video.filename }}</p>
+          <div class="card-bottom">
+            <span class="status {{ video.status }}">{{ video.status }}</span>
+            <span class="muted small">{{ video.created_at[:10] }}</span>
+          </div>
+          <div class="card-actions">
+            {% if video.status == 'ready' %}<a class="button small-button" href="{{ url_for('watch', video_id=video.id) }}">Watch</a>{% endif %}
+            <form method="post" action="{{ url_for('delete_video', video_id=video.id) }}" onsubmit="return confirm('Delete this video?')">
+              <button class="text-button danger" type="submit">Delete</button>
+            </form>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty-state"><div class="empty-icon">▣</div><h3>No videos yet</h3><p class="muted">Upload your first video to see it here.</p></div>
+{% endif %}
+{% endblock %}

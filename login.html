@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Log in · StreamHub{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <h1>Welcome back</h1>
+  <p class="muted">Sign in to manage your video library.</p>
+  <form method="post">
+    <label>Username<input name="username" required autocomplete="username"></label>
+    <label>Password<input type="password" name="password" required autocomplete="current-password"></label>
+    <button class="button" type="submit">Log in</button>
+  </form>
+  <p class="muted small">New here? <a href="{{ url_for('register') }}">Create an account</a>.</p>
+</section>
+{% endblock %}
